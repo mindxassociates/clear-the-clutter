@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f2eb">
+<title>清空大脑，理清下一步</title>
+<style>
+:root{
+  --bg:#f6f3ed;--paper:#fffdf9;--ink:#24302d;--muted:#66736e;
+  --line:#ded9cf;--accent:#5f7f72;--accent2:#dbe6e1;--soft:#f0ece4;
+  --good:#496c5f;--shadow:0 12px 30px rgba(40,49,46,.08);--radius:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.7}
+html[lang="zh-CN"] body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Segoe UI",sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.container{width:min(1080px,92vw);margin:auto}
+.hero{padding:56px 0 30px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--accent2);color:var(--good);border-radius:999px;padding:7px 13px;font-size:.86rem;font-weight:800}
+h1{font-size:clamp(2.35rem,6vw,4.8rem);line-height:1.04;letter-spacing:-.055em;margin:18px 0 15px;max-width:850px}
+html[lang="zh-CN"] h1{letter-spacing:-.02em;line-height:1.12}
+.hero p{font-size:1.12rem;color:var(--muted);max-width:800px}
+.progress-wrap{margin-top:26px}
+.progress-bar{height:8px;background:#e4dfd6;border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--accent);transition:width .3s ease}
+.progress-text{font-size:.87rem;color:var(--muted);margin-top:7px}
+.nav{position:sticky;top:0;z-index:20;background:rgba(246,243,237,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(222,217,207,.8)}
+.nav-inner{display:flex;gap:8px;overflow:auto;padding:10px 0}
+.nav button{white-space:nowrap;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:8px 13px}
+.nav button.active,.nav button:hover{background:var(--ink);color:#fff}
+section{padding:43px 0;scroll-margin-top:62px}
+.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}
+.kicker{font-size:.8rem;letter-spacing:.06em;color:var(--accent);font-weight:850}
+h2{font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.15;margin:4px 0 0;letter-spacing:-.035em}
+html[lang="zh-CN"] h2{letter-spacing:-.015em;line-height:1.25}
+h3{line-height:1.3}
+.lede{color:var(--muted);max-width:800px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);padding:21px}
+.card h3{margin:0 0 7px;font-size:1.08rem}
+.card p{margin:0;color:var(--muted)}
+.num{flex:0 0 40px;height:40px;border-radius:12px;background:var(--accent2);color:var(--good);display:grid;place-items:center;font-weight:850}
+.step{display:flex;gap:14px}
+.pill{display:inline-block;border-radius:999px;background:var(--soft);padding:4px 9px;font-size:.78rem;color:var(--muted);font-weight:750}
+textarea,input,select{width:100%;border:1px solid var(--line);background:#fff;border-radius:13px;padding:11px 12px;color:var(--ink);outline:none}
+textarea:focus,input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(95,127,114,.12)}
+textarea{min-height:135px;resize:vertical}
+label{display:block;font-weight:750;margin:12px 0 6px}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:10px 13px;font-weight:750}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.soft{background:var(--accent2);border-color:transparent;color:var(--good)}
+.btn:active{transform:translateY(1px)}
+.alert{border-left:4px solid var(--accent);background:var(--soft);padding:14px 16px;border-radius:0 14px 14px 0}
+.callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.callout p{color:#dce5e1}
+.decision{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:15px}
+.arrow{font-size:1.6rem;color:var(--muted)}
+.checklist{display:grid;gap:9px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;background:var(--soft);border-radius:13px}
+.check input{width:auto;margin-top:5px}
+.small{font-size:.9rem;color:var(--muted)}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px}
+.bucket{min-height:82px;border:1px dashed #c9c3b8;background:#faf7f0;border-radius:14px;padding:13px}
+.bucket strong{display:block}
+.bucket span{font-size:.88rem;color:var(--muted)}
+.result{padding:14px;border-radius:14px;background:var(--accent2);margin-top:12px}
+.hidden{display:none}
+.accordion{border-top:1px solid var(--line)}
+.accordion button{width:100%;text-align:left;background:none;border:0;padding:16px 0;font-weight:800;display:flex;justify-content:space-between}
+.accordion .body{padding:0 0 16px;color:var(--muted)}
+.footer{padding:42px 0 62px;text-align:center;color:var(--muted)}
+.footer a{color:var(--good);font-weight:850}
+.floating{position:fixed;right:18px;bottom:18px;z-index:25;box-shadow:var(--shadow)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:11px 15px;border-radius:12px;opacity:0;transition:.25s;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.horizon{position:relative;padding-left:18px}
+.horizon:before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--accent);border-radius:99px}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center;padding:16px 0 0}
+.toolbar .hint{margin-right:auto;color:var(--muted);font-size:.9rem}
+.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.summary-item{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff}
+.summary-item span{display:block;color:var(--muted);font-size:.8rem;font-weight:750;margin-bottom:3px}
+.summary-item p{margin:0;white-space:pre-wrap}
+@media(max-width:800px){.grid,.grid3{grid-template-columns:1fr}.decision{grid-template-columns:1fr}.arrow{display:none}.section-head{display:block}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.progress-fill,.toast{transition:none}}
+@page{size:auto;margin:14mm}
+@media print{
+  :root{--bg:#fff;--paper:#fff;--ink:#111;--muted:#444;--line:#bbb;--shadow:none}
+  body{font-size:10.5pt;line-height:1.4;background:#fff}
+  .nav,.toolbar,.floating,.toast,.actions,.progress-wrap,.no-print{display:none!important}
+  .hero{padding:0 0 14px;border-bottom:2px solid #222}
+  .hero .eyebrow{background:none;padding:0}.hero h1{font-size:26pt;margin:8px 0}.hero p{max-width:none}
+  section{padding:16px 0;break-inside:auto}.container{width:100%}
+  .card,.callout,.alert,.bucket,.result{box-shadow:none;background:#fff!important;color:#111!important;break-inside:avoid;border-color:#bbb}
+  .callout p,.card p,.small{color:#333!important}
+  .grid,.grid3,.summary-grid{gap:9px}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  input,textarea,select{border:0;border-bottom:1px solid #999;border-radius:0;padding:5px 0;background:#fff;color:#111}
+  textarea{min-height:55px;overflow:visible;resize:none}
+  .hidden{display:none!important}a{color:#111;text-decoration:none}
+  footer{padding:18px 0 0!important;border-top:1px solid #bbb}
+}
+</style>
+</head>
+<body>
+<header class="hero container" id="top">
+  <span class="eyebrow">给大脑腾出一点空间</span>
+  <h1>清空脑中的杂乱，<br>下一步自然会更清楚。</h1>
+  <p>把未完成的念头写下来，转化成明确行动，再根据当下的时间和精力做选择。</p>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">已完成 0%</div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <button data-target="start">从这里开始</button>
+    <button data-target="capture">① 收集</button>
+    <button data-target="clarify">② 理清</button>
+    <button data-target="organize">③ 归类</button>
+    <button data-target="review">④ 回顾</button>
+    <button data-target="act">⑤ 行动</button>
+    <button data-target="projects">项目规划</button>
+    <button data-target="horizons">不同视角</button>
+    <button data-target="weekly">每周整理</button>
+    <button data-target="summary">我的总结</button>
+  </div>
+</nav>
+
+<div class="container toolbar" aria-label="页面工具">
+  <span class="hint">你填写的内容会自动保存在当前设备上。</span>
+  <button class="btn" onclick="buildSummary(true)">更新总结</button>
+  <button class="btn" onclick="downloadSummary()">下载笔记</button>
+  <button class="btn primary" onclick="printPDF()">打印 / 保存为 PDF</button>
+  <button class="btn" onclick="resetAll()">全部重置</button>
+</div>
+
+<main>
+<section id="start">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">从这里开始</div><h2>你不需要现在就把所有事情做完。</h2></div>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>为什么有些事总在脑中打转？</h3>
+      <p>模糊的任务会不断拉走注意力。给它一个明确结果、下一步行动，或可靠的提醒。</p>
+    </div>
+    <div class="card">
+      <h3>真正能管理的不是“时间”，而是行动</h3>
+      <p>你无法控制时间本身，但可以选择最适合当下的下一步。</p>
+    </div>
+    <div class="card">
+      <h3>什么是“未闭合事项”？</h3>
+      <p>任何尚未完成、决定或放下，却仍占据心理空间的事情。</p>
+    </div>
+    <div class="card">
+      <h3>一个关键转变</h3>
+      <p>整理的不是模糊的待办，而是明确的结果和行动。</p>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:16px">
+    <h3 style="margin-top:0">两分钟理清练习</h3>
+    <p>选一件最占据注意力的事，先定义怎样算“处理好了”，再写下一个看得见、做得到的下一步。</p>
+    <div class="grid">
+      <div><label for="resetOutcome">如果这件事已经处理好，会是什么样子？</label><input id="resetOutcome" placeholder="例如：和房东确认维修时间"></div>
+      <div><label for="resetNext">具体的下一步是什么？</label><input id="resetNext" placeholder="例如：发短信向房东确认时间"></div>
+    </div>
+    <div class="actions"><button class="btn soft" onclick="saveState();mark('start');showToast('练习已保存')">保存这项练习</button></div>
+  </div>
+
+  <div class="alert" style="margin-top:16px">
+    <strong>请记得：</strong>这是一个帮助大脑减负的外部系统，不是要求你做得更多。
+  </div>
+</div>
+</section>
+
+<section id="capture">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">① 收集</div><h2>先把事情从脑中拿出来。</h2><p class="lede">先写下来，之后再分类。</p></div>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>清空大脑</h3>
+      <textarea id="dump" placeholder="把想到的事情都写下来，一行一件即可。暂时不用整理，也不用判断是否重要。"></textarea>
+      <div class="actions">
+        <button class="btn primary" onclick="parseDump()">整理成清单</button>
+        <button class="btn" onclick="document.getElementById('dump').value='';saveState()">清空</button>
+      </div>
+      <p class="small" style="margin-top:9px">每行写一件事，整理起来更方便。</p>
+    </div>
+    <div class="card">
+      <h3>还有什么没有写下来？</h3>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-item="cap1"> 不只写了急事，也写下了那些总想着“以后再处理”的小事。</label>
+        <label class="check"><input type="checkbox" data-item="cap2"> 工作和生活中的事情都考虑到了。</label>
+        <label class="check"><input type="checkbox" data-item="cap3"> 我有一个可靠的地方存放这些提醒。</label>
+        <label class="check"><input type="checkbox" data-item="cap4"> 我不再只靠脑子记住所有事情。</label>
+      </div>
+    </div>
+  </div>
+  <div id="captureList" class="grid3" style="margin-top:16px"></div>
+</div>
+</section>
+
+<section id="clarify">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">② 理清</div><h2>一次理清一件事。</h2><p class="lede">这是什么？需要行动吗？下一步是什么？</p></div>
+  </div>
+
+  <div class="card">
+    <div class="decision">
+      <div>
+        <span class="pill">第一个问题</span>
+        <h3>这是什么？</h3>
+        <p class="muted">需要行动、以后再考虑、留作参考，还是可以直接删除？</p>
+      </div>
+      <div class="arrow">→</div>
+      <div>
+        <span class="pill">第二个问题</span>
+        <h3>需要采取行动吗？</h3>
+        <p class="muted">如果需要：想要什么结果？看得见的下一步是什么？</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:16px">
+    <div class="card"><h3>不需要行动</h3><p><strong>删除：</strong>以后也没有价值。<br><strong>以后再看：</strong>现在不做，但可能想做。<br><strong>资料：</strong>值得保留，但不是任务。</p></div>
+    <div class="card"><h3>需要行动</h3><p>先明确想要的<strong>结果或项目</strong>，再确定一个<strong>具体的下一步</strong>。</p></div>
+    <div class="card"><h3>两分钟原则</h3><p>如果下一步两分钟左右就能完成，现在就做，不必为了管理而增加步骤。</p></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>把模糊的事情变成清晰的行动</h3>
+    <label for="clarifyItem">我正在想的事情</label><input id="clarifyItem" placeholder="例如：准备下周的会议">
+    <div class="grid">
+      <div><label for="clarifyOutcome">我想要的结果是</label><input id="clarifyOutcome" placeholder="例如：议程和材料都准备好了"></div>
+      <div><label for="clarifyAction">真正的下一步是</label><input id="clarifyAction" placeholder="例如：打开会议文档，写出三个议题"></div>
+    </div>
+    <div id="clarifyResult" class="result hidden"></div>
+    <div class="actions"><button class="btn primary" onclick="buildClarify()">转化为行动</button></div>
+  </div>
+
+  <div class="alert" style="margin-top:16px">
+    <strong>检验一下：</strong>如果把这句话交给别人，对方能立刻知道要做什么吗？如果不能，下一步可能还不够具体。
+  </div>
+</div>
+</section>
+
+<section id="organize">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">③ 归类</div><h2>给每一条提醒安排一个位置。</h2><p class="lede">分类清楚，以后才知道去哪里找。</p></div>
+  </div>
+
+  <div class="grid3">
+    <div class="bucket"><strong>项目 / 结果</strong><span>需要多个步骤才能完成的事情。</span></div>
+    <div class="bucket"><strong>下一步行动</strong><span>现在就可以执行的具体动作。</span></div>
+    <div class="bucket"><strong>日历</strong><span>必须在特定日期或时间发生的事情。</span></div>
+    <div class="bucket"><strong>等待中</strong><span>已交给别人，或正在等待外部信息。</span></div>
+    <div class="bucket"><strong>参考资料</strong><span>以后可能有用，但目前不需要行动的信息。</span></div>
+    <div class="bucket"><strong>以后 / 也许</strong><span>现在不准备做，但不想忘记的事情。</span></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>快速分类</h3>
+    <label for="sorter">输入一件事</label><input id="sorter" placeholder="例如：等待对方把合同发回来">
+    <div class="grid3" style="margin-top:10px">
+      <button class="btn" onclick="sortTo('下一步行动')">→ 下一步行动</button>
+      <button class="btn" onclick="sortTo('日历')">→ 日历</button>
+      <button class="btn" onclick="sortTo('等待中')">→ 等待中</button>
+      <button class="btn" onclick="sortTo('参考资料')">→ 参考资料</button>
+      <button class="btn" onclick="sortTo('以后 / 也许')">→ 以后 / 也许</button>
+      <button class="btn" onclick="sortTo('项目 / 结果')">→ 项目 / 结果</button>
+    </div>
+    <div id="sortResult" class="result hidden"></div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card">
+      <h3>日历不只是记录约会</h3>
+      <p>只把必须在<strong>特定日期或时间</strong>发生的事放进日历。需要将来再考虑的事，可以设置可靠提醒。</p>
+    </div>
+    <div class="card">
+      <h3>“以后 / 也许”不等于逃避</h3>
+      <p>关键是把它放进会定期回顾的系统。分清“现在不做”和“永远不做”，本身就是一种决定。</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="review">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">④ 回顾</div><h2>让你的系统保持更新。</h2><p class="lede">每天简单看一眼，每周完整整理一次。</p></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>每天：快速看一遍</h3>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-item="daily1"> 看看今天真正有时间限制的事项。</label>
+        <label class="check"><input type="checkbox" data-item="daily2"> 选择几项符合今天实际情况的行动。</label>
+        <label class="check"><input type="checkbox" data-item="daily3"> 及时记录新的承诺，不只依赖记忆。</label>
+      </div>
+    </div>
+    <div class="card">
+      <h3>每周：重新看见全局</h3>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-item="week1"> 清空并处理收集箱。</label>
+        <label class="check"><input type="checkbox" data-item="week2"> 检查每个进行中的项目是否都有下一步。</label>
+        <label class="check"><input type="checkbox" data-item="week3"> 回顾过去和未来的日历。</label>
+        <label class="check"><input type="checkbox" data-item="week4"> 查看“等待中”和“以后 / 也许”。</label>
+        <label class="check"><input type="checkbox" data-item="week5"> 找出卡住、模糊或需要重新协商的承诺。</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>为什么每周回顾很重要？</h3>
+    <p>它能帮助你看清：什么已完成、什么仍在进行、什么卡住了，以及什么已经不值得继续。</p>
+  </div>
+</div>
+</section>
+
+<section id="act">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">⑤ 行动</div><h2>选择此刻最合适的行动。</h2><p class="lede">从环境、时间、精力和优先程度来判断。</p></div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><h3>① 所处环境</h3><p>我在哪里？手边有什么工具？在这里实际能做什么？</p></div>
+    <div class="card"><h3>② 可用时间</h3><p>距离下一件必须发生的事还有多久？只有十分钟，就不要选需要两小时的任务。</p></div>
+    <div class="card"><h3>③ 当前精力</h3><p>精力是低、中还是高？创造、沟通和日常事务需要不同状态。</p></div>
+    <div class="card"><h3>④ 相对优先</h3><p>在符合前三项条件的选择中，哪一项此刻最值得做？不必追求永远正确，只需做出符合当下的选择。</p></div>
+  </div>
+
+  <div class="callout" style="margin-top:16px">
+    <h3 style="margin-top:0">我现在可以选择什么？</h3>
+    <div class="grid">
+      <div><label for="where">我在哪里 / 当前是什么情境？</label><input id="where" placeholder="家里 / 办公室 / 只有手机 / 外出中"></div>
+      <div><label for="time">我有多少时间？</label><input id="time" placeholder="10分钟 / 45分钟 / 2小时"></div>
+      <div><label for="energy">我现在的精力</label><select id="energy"><option value="">选择精力状态</option><option>低</option><option>中</option><option>高</option></select></div>
+      <div><label for="choice">我现在选择的行动</label><input id="choice" placeholder="写成一个具体动作"></div>
+    </div>
+    <div class="actions"><button class="btn soft" onclick="saveState();showToast('已保存这项选择')">保存这项选择</button></div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card">
+      <h3>三种“工作”都是真实的工作</h3>
+      <p><strong>执行已明确的工作：</strong>从下一步行动清单中选择。<br>
+      <strong>处理临时出现的工作：</strong>意外本来就是生活的一部分。<br>
+      <strong>定义尚未明确的工作：</strong>遇到模糊事项，先停下来理清。</p>
+    </div>
+    <div class="card">
+      <h3>你不可能把所有事情都做完</h3>
+      <p>目标不是让清单归零，而是知道未完成的事在哪里、为什么现在不做，以及何时再次回顾。</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="projects">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">项目规划</div><h2>不止一个步骤？把它当作一个项目。</h2><p class="lede">先定义结果，再确定下一步。</p></div>
+  </div>
+
+  <div class="grid">
+    <div class="card step"><div class="num">1</div><div><h3>问清“为什么”</h3><p>这件事为什么值得做？清晰的目的能帮助你筛选方案。</p></div></div>
+    <div class="card step"><div class="num">2</div><div><h3>看见“成功”</h3><p>如果进展顺利，完成后的现实会是什么样子？</p></div></div>
+    <div class="card step"><div class="num">3</div><div><h3>把想法全部倒出来</h3><p>先发散，再筛选。写下可能影响结果的细节、顾虑和选择。</p></div></div>
+    <div class="card step"><div class="num">4</div><div><h3>整理结构</h3><p>按照组成部分、顺序、重要性或里程碑整理想法。</p></div></div>
+    <div class="card step"><div class="num">5</div><div><h3>明确下一步</h3><p>问自己：“现在能推进什么？”写下一个今天就能开始的动作。</p></div></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>互动式项目规划</h3>
+    <label for="pname">我想推进的项目 / 结果</label><input id="pname" placeholder="例如：安排一次家庭旅行">
+    <label for="ppurpose">这件事为什么重要？</label><input id="ppurpose" placeholder="这个项目背后的目的或价值">
+    <label for="poutcome">成功完成时会是什么样子？</label><input id="poutcome" placeholder="尽可能具体地描述完成后的结果">
+    <label for="pbrain">把想到的内容全部写下来</label><textarea id="pbrain" placeholder="人员、时间、地点、信息、风险、选项、待确认事项……"></textarea>
+    <label for="pnext">现在可以采取的下一步是什么？</label><input id="pnext" placeholder="例如：打开两个机票网站，比较出发时间">
+    <div class="actions"><button class="btn primary" onclick="saveProject()">保存项目计划</button><button class="btn" onclick="clearProject()">重新开始</button></div>
+    <div id="projectResult" class="result hidden"></div>
+  </div>
+</div>
+</section>
+
+<section id="horizons">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">不同视角</div><h2>从具体行动，逐渐拉远到人生意义。</h2><p class="lede">看看今天做的事，是否正在支持你想要的生活。</p></div>
+  </div>
+
+  <div class="grid">
+    <div class="card horizon"><span class="pill">地面层</span><h3>当前行动</h3><p>电话、邮件、购买、整理、预约……任何能真正推动事情前进的具体动作。</p></div>
+    <div class="card horizon"><span class="pill">一万英尺</span><h3>当前项目</h3><p>正在努力完成的短期结果。一个项目通常包含多个具体行动。</p></div>
+    <div class="card horizon"><span class="pill">两万英尺</span><h3>责任范围</h3><p>需要持续维护的生活或工作领域，例如家庭、财务、健康、工作与关系。</p></div>
+    <div class="card horizon"><span class="pill">三万英尺</span><h3>一至两年目标</h3><p>未来一两年，你希望生活中的哪些方面发生变化？</p></div>
+    <div class="card horizon"><span class="pill">四万英尺</span><h3>三至五年愿景</h3><p>职业、家庭、生活方式、环境和重要关系可能走向哪里？</p></div>
+    <div class="card horizon"><span class="pill">五万英尺以上</span><h3>人生与意义</h3><p>我为什么做这些事？什么真正重要？什么样的生活值得投入？</p></div>
+  </div>
+
+  <div class="alert" style="margin-top:16px">
+    <strong>一个实用原则：</strong>大问题让人不知所措时，先回到地面层，理清眼前的行动；总在忙却不知道为什么时，拉远视角，看看项目、责任、目标和方向是否一致。
+  </div>
+</div>
+</section>
+
+<section id="weekly">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">每周整理</div><h2>清理一次心理桌面。</h2><p class="lede">追求清晰，而不是完美。</p></div>
+  </div>
+
+  <div class="card">
+    <div class="checklist">
+      <label class="check"><input type="checkbox" data-item="reset1"> ① 写下仍然只存在脑中的事情。</label>
+      <label class="check"><input type="checkbox" data-item="reset2"> ② 清空笔记、收件箱和纸质提醒。</label>
+      <label class="check"><input type="checkbox" data-item="reset3"> ③ 回顾过去的日历，补上需要跟进的事。</label>
+      <label class="check"><input type="checkbox" data-item="reset4"> ④ 查看未来的日历，提前做好准备。</label>
+      <label class="check"><input type="checkbox" data-item="reset5"> ⑤ 为每个进行中的项目确定下一步。</label>
+      <label class="check"><input type="checkbox" data-item="reset6"> ⑥ 更新“下一步行动”清单。</label>
+      <label class="check"><input type="checkbox" data-item="reset7"> ⑦ 跟进“等待中”的事项。</label>
+      <label class="check"><input type="checkbox" data-item="reset8"> ⑧ 重新查看“以后 / 也许”。</label>
+      <label class="check"><input type="checkbox" data-item="reset9"> ⑨ 从参考资料中寻找新的行动。</label>
+      <label class="check"><input type="checkbox" data-item="reset10"> ⑩ 给一个新想法留出空间。</label>
+    </div>
+    <div class="actions"><button class="btn primary" onclick="completeWeekly()">完成每周回顾</button></div>
+    <div id="weeklyResult" class="result hidden"></div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card"><h3>最后问自己三个问题</h3><p>我是否清楚现在还有什么没完成？<br>每个进行中的项目是否都有下一步？<br>我是否相信这个系统会在需要时提醒我？</p></div>
+    <div class="card"><h3>你不需要完成所有事情</h3><p>一个好系统能让你安心地说：“我现在不做这件事，但我知道它在哪里，也会在合适的时候再看。”</p></div>
+  </div>
+</div>
+</section>
+
+<section id="summary">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">我的总结</div><h2>一眼看清当前计划。</h2><p class="lede">这里会汇总你填写的重点内容，并包含在打印和 PDF 中。</p></div>
+  </div>
+  <div class="card">
+    <div id="summaryGrid" class="summary-grid" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn primary" onclick="buildSummary(true)">刷新总结</button>
+      <button class="btn" onclick="downloadSummary()">下载为文本</button>
+      <button class="btn" onclick="copySummary()">复制总结</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">随时可用</div><h2>感到卡住时，问自己这五个问题。</h2></div>
+  </div>
+  <div class="card">
+    <div class="accordion"><button onclick="toggleAcc(this)">此刻最占据我注意力的是什么？ <span>＋</span></button><div class="body hidden">先把它说清楚，不必马上解决。</div></div>
+    <div class="accordion"><button onclick="toggleAcc(this)">我希望得到什么结果？ <span>＋</span></button><div class="body hidden">描述一个能让你判断“已经完成”的结果。</div></div>
+    <div class="accordion"><button onclick="toggleAcc(this)">具体的下一步是什么？ <span>＋</span></button><div class="body hidden">写下一个实际能完成的动作，而不是模糊主题。</div></div>
+    <div class="accordion"><button onclick="toggleAcc(this)">这条提醒应该放在哪里？ <span>＋</span></button><div class="body hidden">项目、下一步行动、日历、等待中、参考资料，或以后 / 也许。</div></div>
+    <div class="accordion"><button onclick="toggleAcc(this)">根据当前情况，做什么最合适？ <span>＋</span></button><div class="body hidden">综合考虑环境、时间、精力和相对优先程度。</div></div>
+  </div>
+</div>
+</section>
+</main>
+
+<button class="btn primary floating" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 返回顶部</button>
+<div class="toast" id="toast"></div>
+
+<footer class="footer">
+  <div class="container">
+    <div>由 <a href="https://mindx.us/zh/" target="_blank" rel="noopener noreferrer">Mind X社区</a> 开发</div>
+  </div>
+</footer>
+
+<script>
+const KEY='mindx_clear_mental_clutter_zh_v1';
+let state=JSON.parse(localStorage.getItem(KEY)||'{}');
+
+function saveState(){
+  document.querySelectorAll('input,textarea,select').forEach(el=>{
+    const k=el.id||el.dataset.item;
+    if(!k)return;
+    state[k]=el.type==='checkbox'?el.checked:el.value;
+  });
+  localStorage.setItem(KEY,JSON.stringify(state));
+  updateProgress();
+  buildSummary(false);
+}
+function restore(){
+  document.querySelectorAll('input,textarea,select').forEach(el=>{
+    const k=el.id||el.dataset.item;
+    if(!k||!(k in state))return;
+    if(el.type==='checkbox')el.checked=!!state[k];else el.value=state[k];
+  });
+  updateProgress();
+  parseDump(false);
+  buildSummary(false);
+}
+document.addEventListener('input',saveState);
+document.addEventListener('change',saveState);
+
+function mark(id){state['visited_'+id]=true;localStorage.setItem(KEY,JSON.stringify(state));updateProgress();}
+function updateProgress(){
+  const ids=['start','capture','clarify','organize','review','act','projects','horizons','weekly','summary'];
+  const done=ids.filter(x=>state['visited_'+x]).length;
+  const pct=Math.round(done/ids.length*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressText').textContent='已完成 '+pct+'%';
+}
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)mark(e.target.id);});
+},{threshold:.28});
+document.querySelectorAll('main section[id]').forEach(s=>observer.observe(s));
+
+document.querySelectorAll('.nav button').forEach(btn=>{
+  btn.addEventListener('click',()=>document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth',block:'start'}));
+});
+const navObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===e.target.id));
+    }
+  });
+},{rootMargin:'-35% 0px -55% 0px'});
+document.querySelectorAll('main section[id]').forEach(s=>navObs.observe(s));
+
+function parseDump(notify=true){
+  const raw=document.getElementById('dump').value.trim();
+  const list=document.getElementById('captureList');
+  list.innerHTML='';
+  if(!raw){if(notify)showToast('请先写下几件想到的事情。');return;}
+  raw.split(/\n+/).map(x=>x.trim()).filter(Boolean).slice(0,40).forEach((item,i)=>{
+    const el=document.createElement('div');el.className='card';
+    el.innerHTML='<span class="pill">第 '+(i+1)+' 项</span><h3 style="margin-top:9px"></h3><p class="small">接下来：先问“这是什么？”，再问“需要行动吗？”</p>';
+    el.querySelector('h3').textContent=item;list.appendChild(el);
+  });
+  if(notify){mark('capture');showToast('已整理出 '+list.children.length+' 项');}
+}
+function buildClarify(){
+  const item=document.getElementById('clarifyItem').value.trim();
+  const out=document.getElementById('clarifyOutcome').value.trim();
+  const act=document.getElementById('clarifyAction').value.trim();
+  const box=document.getElementById('clarifyResult');box.classList.remove('hidden');
+  if(!item){box.textContent='请先写下你正在想的事情。';return;}
+  box.innerHTML='<strong>'+escapeHtml(item)+'</strong><br>完成时的样子：'+escapeHtml(out||'还需要进一步明确')+'<br>下一步行动：'+escapeHtml(act||'还需要确定一个具体动作');
+  mark('clarify');
+}
+function sortTo(bucket){
+  const item=document.getElementById('sorter').value.trim();
+  const box=document.getElementById('sortResult');box.classList.remove('hidden');
+  box.textContent=item?`${item} → ${bucket}`:'请先输入一件事。';
+  mark('organize');
+}
+function saveProject(){
+  const name=document.getElementById('pname').value.trim()||'未命名项目';
+  const next=document.getElementById('pnext').value.trim()||'还需要确定一个具体的下一步';
+  const box=document.getElementById('projectResult');box.classList.remove('hidden');
+  box.innerHTML='<strong>'+escapeHtml(name)+'</strong><br>下一步行动：'+escapeHtml(next);
+  state.lastProject={name,next,date:new Date().toISOString()};
+  localStorage.setItem(KEY,JSON.stringify(state));mark('projects');showToast('项目计划已保存在当前设备');
+}
+function clearProject(){
+  ['pname','ppurpose','poutcome','pbrain','pnext'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('projectResult').classList.add('hidden');
+}
+function completeWeekly(){
+  const checks=[...document.querySelectorAll('#weekly input[type=checkbox]')];
+  const n=checks.filter(x=>x.checked).length;
+  const box=document.getElementById('weeklyResult');box.classList.remove('hidden');
+  box.textContent=n===checks.length?'每周回顾已完成。你已经重新看清了整个系统。':`已完成 ${n}/${checks.length} 项。先处理最有价值的部分，其余内容可以留在系统里以后再看。`;
+  mark('weekly');
+}
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;body.classList.toggle('hidden');
+  btn.querySelector('span').textContent=body.classList.contains('hidden')?'＋':'−';
+}
+function summaryData(){
+  const value=id=>(document.getElementById(id)?.value||'').trim();
+  return [
+    ['脑中待整理的事项',value('dump')],
+    ['当前重点',value('clarifyItem')||value('resetOutcome')],
+    ['想要的结果',value('clarifyOutcome')||value('poutcome')],
+    ['下一步行动',value('clarifyAction')||value('pnext')||value('resetNext')],
+    ['现在选择的行动',value('choice')],
+    ['当前条件',[value('where'),value('time'),value('energy')].filter(Boolean).join(' · ')]
+  ];
+}
+function buildSummary(notify=false){
+  const grid=document.getElementById('summaryGrid');
+  if(!grid)return;
+  const rows=summaryData().filter(([,v])=>v);
+  grid.innerHTML='';
+  if(!rows.length){
+    grid.innerHTML='<div class="summary-item"><span>这里还没有内容</span><p>完成任意一项练习后，重点内容会自动出现在这里。</p></div>';
+  }else{
+    rows.forEach(([label,value])=>{
+      const item=document.createElement('div');item.className='summary-item';
+      item.innerHTML='<span>'+escapeHtml(label)+'</span><p>'+escapeHtml(value)+'</p>';
+      grid.appendChild(item);
+    });
+  }
+  if(notify){mark('summary');showToast('总结已更新');}
+}
+function summaryText(){
+  const rows=summaryData().filter(([,v])=>v);
+  return ['清空大脑，理清下一步——我的总结','',...rows.flatMap(([k,v])=>[k,v,'']),'由 Mind X社区 开发'].join('\n');
+}
+function downloadSummary(){
+  buildSummary(false);
+  const blob=new Blob([summaryText()],{type:'text/plain;charset=utf-8'});
+  const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='我的行动总结.txt';link.click();
+  setTimeout(()=>URL.revokeObjectURL(link.href),1000);showToast('笔记已下载');
+}
+async function copySummary(){
+  try{await navigator.clipboard.writeText(summaryText());showToast('总结已复制');}
+  catch{showToast('当前浏览器无法自动复制');}
+}
+function printPDF(){
+  saveState();buildSummary(false);
+  document.querySelectorAll('textarea').forEach(el=>{el.dataset.oldHeight=el.style.height;el.style.height=el.scrollHeight+'px';});
+  window.print();
+}
+window.addEventListener('afterprint',()=>document.querySelectorAll('textarea').forEach(el=>el.style.height=el.dataset.oldHeight||''));
+function resetAll(){
+  if(!confirm('确定要清除当前设备上保存的所有内容和进度吗？'))return;
+  localStorage.removeItem(KEY);state={};
+  document.querySelectorAll('input,textarea').forEach(el=>{if(el.type==='checkbox')el.checked=false;else el.value='';});
+  document.querySelectorAll('select').forEach(el=>el.selectedIndex=0);
+  document.querySelectorAll('.result').forEach(el=>{el.textContent='';el.classList.add('hidden');});
+  document.getElementById('captureList').innerHTML='';
+  updateProgress();buildSummary(false);showToast('所有内容已清除');
+}
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),2200);
+}
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+restore();
+</script>
+</body>
+</html>

@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f2eb">
+<title>Clear the Clutter in Your Mind</title>
+<style>
+:root{
+  --bg:#f6f3ed;--paper:#fffdf9;--ink:#24302d;--muted:#66736e;
+  --line:#ded9cf;--accent:#5f7f72;--accent2:#dbe6e1;--soft:#f0ece4;
+  --good:#496c5f;--shadow:0 12px 30px rgba(40,49,46,.08);--radius:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.7}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.container{width:min(1080px,92vw);margin:auto}
+.hero{padding:56px 0 30px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--accent2);color:var(--good);border-radius:999px;padding:7px 13px;font-size:.86rem;font-weight:800}
+h1{font-size:clamp(2.35rem,6vw,4.8rem);line-height:1.04;letter-spacing:-.055em;margin:18px 0 15px;max-width:850px}
+.hero p{font-size:1.12rem;color:var(--muted);max-width:800px}
+.progress-wrap{margin-top:26px}
+.progress-bar{height:8px;background:#e4dfd6;border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--accent);transition:width .3s ease}
+.progress-text{font-size:.87rem;color:var(--muted);margin-top:7px}
+.nav{position:sticky;top:0;z-index:20;background:rgba(246,243,237,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(222,217,207,.8)}
+.nav-inner{display:flex;gap:8px;overflow:auto;padding:10px 0}
+.nav button{white-space:nowrap;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:8px 13px}
+.nav button.active,.nav button:hover{background:var(--ink);color:#fff}
+section{padding:43px 0;scroll-margin-top:62px}
+.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}
+.kicker{font-size:.8rem;letter-spacing:.06em;color:var(--accent);font-weight:850}
+h2{font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.15;margin:4px 0 0;letter-spacing:-.035em}
+h3{line-height:1.3}
+.lede{color:var(--muted);max-width:800px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);padding:21px}
+.card h3{margin:0 0 7px;font-size:1.08rem}
+.card p{margin:0;color:var(--muted)}
+.num{flex:0 0 40px;height:40px;border-radius:12px;background:var(--accent2);color:var(--good);display:grid;place-items:center;font-weight:850}
+.step{display:flex;gap:14px}
+.pill{display:inline-block;border-radius:999px;background:var(--soft);padding:4px 9px;font-size:.78rem;color:var(--muted);font-weight:750}
+textarea,input,select{width:100%;border:1px solid var(--line);background:#fff;border-radius:13px;padding:11px 12px;color:var(--ink);outline:none}
+textarea:focus,input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(95,127,114,.12)}
+textarea{min-height:135px;resize:vertical}
+label{display:block;font-weight:750;margin:12px 0 6px}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:10px 13px;font-weight:750}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.soft{background:var(--accent2);border-color:transparent;color:var(--good)}
+.btn:active{transform:translateY(1px)}
+.alert{border-left:4px solid var(--accent);background:var(--soft);padding:14px 16px;border-radius:0 14px 14px 0}
+.callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.callout p{color:#dce5e1}
+.decision{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:15px}
+.arrow{font-size:1.6rem;color:var(--muted)}
+.checklist{display:grid;gap:9px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;background:var(--soft);border-radius:13px}
+.check input{width:auto;margin-top:5px}
+.small{font-size:.9rem;color:var(--muted)}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px}
+.bucket{min-height:82px;border:1px dashed #c9c3b8;background:#faf7f0;border-radius:14px;padding:13px}
+.bucket strong{display:block}
+.bucket span{font-size:.88rem;color:var(--muted)}
+.result{padding:14px;border-radius:14px;background:var(--accent2);margin-top:12px}
+.hidden{display:none}
+.accordion{border-top:1px solid var(--line)}
+.accordion button{width:100%;text-align:left;background:none;border:0;padding:16px 0;font-weight:800;display:flex;justify-content:space-between}
+.accordion .body{padding:0 0 16px;color:var(--muted)}
+.footer{padding:42px 0 62px;text-align:center;color:var(--muted)}
+.footer a{color:var(--good);font-weight:850}
+.floating{position:fixed;right:18px;bottom:18px;z-index:25;box-shadow:var(--shadow)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:11px 15px;border-radius:12px;opacity:0;transition:.25s;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.horizon{position:relative;padding-left:18px}
+.horizon:before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--accent);border-radius:99px}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center;padding:16px 0 0}
+.toolbar .hint{margin-right:auto;color:var(--muted);font-size:.9rem}
+.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.summary-item{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff}
+.summary-item span{display:block;color:var(--muted);font-size:.8rem;font-weight:750;margin-bottom:3px}
+.summary-item p{margin:0;white-space:pre-wrap}
+@media(max-width:800px){.grid,.grid3{grid-template-columns:1fr}.decision{grid-template-columns:1fr}.arrow{display:none}.section-head{display:block}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.progress-fill,.toast{transition:none}}
+@page{size:auto;margin:14mm}
+@media print{
+  :root{--bg:#fff;--paper:#fff;--ink:#111;--muted:#444;--line:#bbb;--shadow:none}
+  body{font-size:10.5pt;line-height:1.4;background:#fff}
+  .nav,.toolbar,.floating,.toast,.actions,.progress-wrap,.no-print{display:none!important}
+  .hero{padding:0 0 14px;border-bottom:2px solid #222}
+  .hero .eyebrow{background:none;padding:0}.hero h1{font-size:26pt;margin:8px 0}.hero p{max-width:none}
+  section{padding:16px 0;break-inside:auto}.container{width:100%}
+  .card,.callout,.alert,.bucket,.result{box-shadow:none;background:#fff!important;color:#111!important;break-inside:avoid;border-color:#bbb}
+  .callout p,.card p,.small{color:#333!important}
+  .grid,.grid3,.summary-grid{gap:9px}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  input,textarea,select{border:0;border-bottom:1px solid #999;border-radius:0;padding:5px 0;background:#fff;color:#111}
+  textarea{min-height:55px;overflow:visible;resize:none}
+  .hidden{display:none!important}a{color:#111;text-decoration:none}
+  footer{padding:18px 0 0!important;border-top:1px solid #bbb}
+}
+</style>
+</head>
+<body>
+<header class="hero container" id="top">
+  <span class="eyebrow">Make a Little More Mental Space</span>
+  <h1>Clear the clutter in your mind,<br>and the next step becomes clearer.</h1>
+  <p>Get unfinished thoughts out of your head, turn them into clear actions, and choose what fits your time and energy now.</p>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0% complete</div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <button data-target="start">Start Here</button>
+    <button data-target="capture">① Capture</button>
+    <button data-target="clarify">② Clarify</button>
+    <button data-target="organize">③ Organize</button>
+    <button data-target="review">④ Review</button>
+    <button data-target="act">⑤ Act</button>
+    <button data-target="projects">Projects</button>
+    <button data-target="horizons">Horizons</button>
+    <button data-target="weekly">Weekly Reset</button>
+    <button data-target="summary">My Summary</button>
+  </div>
+</nav>
+
+<div class="container toolbar" aria-label="Page tools">
+  <span class="hint">Your entries save automatically on this device.</span>
+  <button class="btn" onclick="buildSummary(true)">Update Summary</button>
+  <button class="btn" onclick="downloadSummary()">Download Notes</button>
+  <button class="btn primary" onclick="printPDF()">Print / Save as PDF</button>
+  <button class="btn" onclick="resetAll()">Reset</button>
+</div>
+
+<main>
+<section id="start">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">Start Here</div><h2>You do not need to get everything done right now.</h2></div>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>Why do things keep taking up mental space?</h3>
+      <p>Unclear tasks keep asking for attention. Give each one a clear outcome, next action, or trusted reminder.</p>
+    </div>
+    <div class="card">
+      <h3>What you really manage is not “time,” but action</h3>
+      <p>You cannot manage time itself. You can choose the next action that fits this moment.</p>
+    </div>
+    <div class="card">
+      <h3>What is an “open loop”?</h3>
+      <p>An unfinished task, decision, or promise that still occupies mental space.</p>
+    </div>
+    <div class="card">
+      <h3>One important shift</h3>
+      <p>Organize clear outcomes and actions—not vague reminders.</p>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:16px">
+    <h3 style="margin-top:0">A two-minute clarity exercise</h3>
+    <p>Choose one concern. Define “done,” then name one visible next action.</p>
+    <div class="grid">
+      <div><label for="resetOutcome">If this were already handled, what would that look like?</label><input id="resetOutcome" placeholder="e.g., Confirm a repair time with the landlord"></div>
+      <div><label for="resetNext">What exactly is the next action?</label><input id="resetNext" placeholder="e.g., Text the landlord to confirm the time"></div>
+    </div>
+    <div class="actions"><button class="btn soft" onclick="saveState();mark('start');showToast('Exercise saved')">Save This Exercise</button></div>
+  </div>
+
+  <div class="alert" style="margin-top:16px">
+    <strong>Remember:</strong> This is an external memory—not a demand to do more.
+  </div>
+</div>
+</section>
+
+<section id="capture">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">① Capture</div><h2>Get it out of your head.</h2><p class="lede">Write first. Sort later.</p></div>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>Mind dump</h3>
+      <textarea id="dump" placeholder="Write down whatever comes to mind. One item per line is fine, but it does not need to be neat. Capture first; organize later."></textarea>
+      <div class="actions">
+        <button class="btn primary" onclick="parseDump()">Turn These Into a List</button>
+        <button class="btn" onclick="document.getElementById('dump').value='';saveState()">Clear</button>
+      </div>
+      <p class="small" style="margin-top:9px">One item per line works best.</p>
+    </div>
+    <div class="card">
+      <h3>Have you captured enough?</h3>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-item="cap1"> I captured not only urgent things, but also the small things I keep thinking I will deal with later.</label>
+        <label class="check"><input type="checkbox" data-item="cap2"> I considered both work and personal life.</label>
+        <label class="check"><input type="checkbox" data-item="cap3"> I have a trusted place to store these reminders.</label>
+        <label class="check"><input type="checkbox" data-item="cap4"> I am not relying on remembering things as my only way of managing them.</label>
+      </div>
+    </div>
+  </div>
+  <div id="captureList" class="grid3" style="margin-top:16px"></div>
+</div>
+</section>
+
+<section id="clarify">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">② Clarify</div><h2>Make one item actionable.</h2><p class="lede">What is it? Does it require action? What happens next?</p></div>
+  </div>
+
+  <div class="card">
+    <div class="decision">
+      <div>
+        <span class="pill">First question</span>
+        <h3>What is this?</h3>
+        <p class="muted">Is it something that requires action, something you may want to do later, reference information, or something you no longer need?</p>
+      </div>
+      <div class="arrow">→</div>
+      <div>
+        <span class="pill">Second question</span>
+        <h3>Does it require action?</h3>
+        <p class="muted">If it does: What outcome do you want? What is the next visible action?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-top:16px">
+    <div class="card"><h3>No action needed</h3><p><strong>Delete:</strong> No future value.<br><strong>Review later:</strong> Not now, but you may want to do it later.<br><strong>Reference:</strong> Information to keep, not a task.</p></div>
+    <div class="card"><h3>Action needed</h3><p>First define its <strong>outcome/project</strong>, then define the <strong>next specific action</strong>.</p></div>
+    <div class="card"><h3>Two-minute rule</h3><p>If the next action you define can be completed very quickly, do it right away. Do not add extra management steps just to manage it.</p></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Turn a vague task into a clear one</h3>
+    <label for="clarifyItem">What I am thinking about</label><input id="clarifyItem" placeholder="e.g., Prepare for next week’s meeting">
+    <div class="grid">
+      <div><label for="clarifyOutcome">The outcome I want is</label><input id="clarifyOutcome" placeholder="e.g., The agenda and materials are ready"></div>
+      <div><label for="clarifyAction">The actual next action is</label><input id="clarifyAction" placeholder="e.g., Open the meeting document and write three agenda items"></div>
+    </div>
+    <div id="clarifyResult" class="result hidden"></div>
+    <div class="actions"><button class="btn primary" onclick="buildClarify()">Make It Actionable</button></div>
+  </div>
+
+  <div class="alert" style="margin-top:16px">
+    <strong>Check:</strong> If I handed this task to someone else, would they know what to do just from this one sentence? If not, the next action may not be specific enough.
+  </div>
+</div>
+</section>
+
+<section id="organize">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">③ Organize</div><h2>Give every reminder a home.</h2><p class="lede">A clear category tells you where to look later.</p></div>
+  </div>
+
+  <div class="grid3">
+    <div class="bucket"><strong>Projects / Outcomes</strong><span>Things that require multiple steps to complete.</span></div>
+    <div class="bucket"><strong>Next Actions</strong><span>Specific actions you can do now.</span></div>
+    <div class="bucket"><strong>Calendar</strong><span>Things that must happen on a specific day or at a specific time.</span></div>
+    <div class="bucket"><strong>Waiting For</strong><span>Things delegated to others or waiting on outside information.</span></div>
+    <div class="bucket"><strong>Reference</strong><span>Information that may be useful later but does not require action.</span></div>
+    <div class="bucket"><strong>Someday / Maybe</strong><span>Things you are not ready to do now but do not want to forget.</span></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Quick sorter</h3>
+    <label for="sorter">Enter one thing</label><input id="sorter" placeholder="e.g., Wait for the other person to send the contract back">
+    <div class="grid3" style="margin-top:10px">
+      <button class="btn" onclick="sortTo('Next Actions')">→ Next Action</button>
+      <button class="btn" onclick="sortTo('Calendar')">→ Calendar</button>
+      <button class="btn" onclick="sortTo('Waiting For')">→ Waiting For</button>
+      <button class="btn" onclick="sortTo('Reference')">→ Reference</button>
+      <button class="btn" onclick="sortTo('Someday / Maybe')">→ Someday / Maybe</button>
+      <button class="btn" onclick="sortTo('Projects / Outcomes')">→ Project / Outcome</button>
+    </div>
+    <div id="sortResult" class="result hidden"></div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card">
+      <h3>A calendar is more than an “appointment tool”</h3>
+      <p>It is best for things that happen on a <strong>specific date/time</strong>. For things you only need to reconsider on a future date, set a trusted reminder so your brain does not have to keep remembering them in advance.</p>
+    </div>
+    <div class="card">
+      <h3>“Someday / Maybe” is not avoidance</h3>
+      <p>The key is to put it into a system you will actually review regularly. Separating “not now” from “never” is itself a clear decision.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="review">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">④ Review</div><h2>Keep your system current.</h2><p class="lede">Review briefly each day and more fully each week.</p></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Daily: Take a quick look</h3>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-item="daily1"> Check what truly has time constraints today.</label>
+        <label class="check"><input type="checkbox" data-item="daily2"> Choose a few actions that fit today’s real conditions.</label>
+        <label class="check"><input type="checkbox" data-item="daily3"> Capture new commitments instead of relying on memory.</label>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Weekly: Regain the big picture</h3>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-item="week1"> Empty and process your inbox.</label>
+        <label class="check"><input type="checkbox" data-item="week2"> Review every active project and make sure each has a next action.</label>
+        <label class="check"><input type="checkbox" data-item="week3"> Review your past and upcoming calendar.</label>
+        <label class="check"><input type="checkbox" data-item="week4"> Review Waiting For and Someday / Maybe items.</label>
+        <label class="check"><input type="checkbox" data-item="week5"> Identify commitments that are stuck, unclear, or need to be renegotiated.</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Why is a weekly review so important?</h3>
+    <p>It reveals what is done, active, stuck, or no longer worth doing.</p>
+  </div>
+</div>
+</section>
+
+<section id="act">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">⑤ Act</div><h2>Choose what makes sense right now.</h2><p class="lede">Filter by context, time, energy, and priority.</p></div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><h3>① Context</h3><p>Where am I? What tools do I have? What can actually be done in this environment?</p></div>
+    <div class="card"><h3>② Available Time</h3><p>How long until the next thing that must happen? If you only have ten minutes, do not choose a task that needs two hours.</p></div>
+    <div class="card"><h3>③ Energy</h3><p>Is my energy low, medium, or high? Creative work, communication, and routine tasks require different kinds of energy.</p></div>
+    <div class="card"><h3>④ Relative Priority</h3><p>Among the options that fit the first three conditions, which is most worthwhile right now? You do not need a permanently correct answer—just a grounded choice for this moment.</p></div>
+  </div>
+
+  <div class="callout" style="margin-top:16px">
+    <h3 style="margin-top:0">What can I choose right now?</h3>
+    <div class="grid">
+      <div><label for="where">Where am I / What is the context?</label><input id="where" placeholder="At home / office / phone / out and about"></div>
+      <div><label for="time">How much time do I have?</label><input id="time" placeholder="10 minutes / 45 minutes / 2 hours"></div>
+      <div><label for="energy">My energy</label><select id="energy"><option value="">Choose energy level</option><option>Low</option><option>Medium</option><option>High</option></select></div>
+      <div><label for="choice">The action I am choosing now</label><input id="choice" placeholder="Write it as a specific action"></div>
+    </div>
+    <div class="actions"><button class="btn soft" onclick="saveState();showToast('This action choice has been saved')">Save This Choice</button></div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card">
+      <h3>Three kinds of “work” are all valid</h3>
+      <p><strong>Do defined work:</strong> Execute from your Next Actions list.<br>
+      <strong>Handle unexpected work:</strong> Unexpected things are part of life.<br>
+      <strong>Define your own work:</strong> When something is unclear, pause and clarify it.</p>
+    </div>
+    <div class="card">
+      <h3>You cannot get everything done</h3>
+      <p>The goal is not to make the number on your list reach zero. It is to know where unfinished things are, why they are not being done now, and when you will review them again.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="projects">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">Projects</div><h2>More than one step? Make it a project.</h2><p class="lede">Define the outcome, then the next action.</p></div>
+  </div>
+
+  <div class="grid">
+    <div class="card step"><div class="num">1</div><div><h3>Ask: Why?</h3><p>Why is this worth doing? What purpose does it serve? A clear purpose helps you filter options and create better ones.</p></div></div>
+    <div class="card step"><div class="num">2</div><div><h3>Picture “Success”</h3><p>If this goes well, what will reality look like? Define the outcome before jumping to “What do I need to do?”</p></div></div>
+    <div class="card step"><div class="num">3</div><div><h3>Brain-Dump Everything</h3><p>Generate ideas first, then filter them. Put the details, concerns, opportunities, and options that may affect the outcome on the table.</p></div></div>
+    <div class="card step"><div class="num">4</div><div><h3>Organize the Structure</h3><p>Organize ideas by components, sequence, importance, or milestones. Simple projects do not need complicated plans.</p></div></div>
+    <div class="card step"><div class="num">5</div><div><h3>Define the Next Action</h3><p>Ask, “What can I move forward right now?” If you can start today, define one visible action.</p></div></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Interactive project planner</h3>
+    <label for="pname">Project / outcome I want to move forward</label><input id="pname" placeholder="e.g., Plan a family trip">
+    <label for="ppurpose">Why does this matter?</label><input id="ppurpose" placeholder="The purpose or value behind this project">
+    <label for="poutcome">What will success look like?</label><input id="poutcome" placeholder="Describe the finished outcome as specifically as possible">
+    <label for="pbrain">Write down everything that comes to mind</label><textarea id="pbrain" placeholder="People, timing, places, information, risks, options, things to confirm… write it all down"></textarea>
+    <label for="pnext">What is the next action you can take now?</label><input id="pnext" placeholder="e.g., Open two flight websites and compare departure times">
+    <div class="actions"><button class="btn primary" onclick="saveProject()">Save Project Plan</button><button class="btn" onclick="clearProject()">Start Over</button></div>
+    <div id="projectResult" class="result hidden"></div>
+  </div>
+</div>
+</section>
+
+<section id="horizons">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">Horizons</div><h2>Zoom out from actions to meaning.</h2><p class="lede">Check whether today’s work supports the life you want.</p></div>
+  </div>
+
+  <div class="grid">
+    <div class="card horizon"><span class="pill">Closest to the Ground</span><h3>Current Actions</h3><p>Calls, emails, purchases, organizing, appointments, writing a message… any concrete action that genuinely moves something forward.</p></div>
+    <div class="card horizon"><span class="pill">10,000 Feet</span><h3>Current Projects</h3><p>Short-term outcomes you are working to complete. A project often generates many specific actions.</p></div>
+    <div class="card horizon"><span class="pill">20,000 Feet</span><h3>Areas of Responsibility</h3><p>Areas of life or work you need to maintain over time, such as family, finances, health, work, relationships, and household responsibilities.</p></div>
+    <div class="card horizon"><span class="pill">30,000 Feet</span><h3>1–2 Year Goals</h3><p>What changes or outcomes would you like to see across different areas of life over the next one or two years?</p></div>
+    <div class="card horizon"><span class="pill">40,000 Feet</span><h3>3–5 Year Vision</h3><p>A longer-term direction: Where might your career, family, lifestyle, environment, and important relationships be heading?</p></div>
+    <div class="card horizon"><span class="pill">50,000+ Feet</span><h3>Life & Meaning</h3><p>The bigger questions: Why am I doing these things? What truly matters to me? What kind of life is worth investing in?</p></div>
+  </div>
+
+  <div class="alert" style="margin-top:16px">
+    <strong>A practical principle:</strong> When a “big question” feels overwhelming, start at the ground level and clarify the actions in front of you. When you find yourself constantly busy without knowing why, zoom out and check whether your projects, responsibilities, goals, and direction are aligned.
+  </div>
+</div>
+</section>
+
+<section id="weekly">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">Weekly Reset</div><h2>Clear your mental desktop.</h2><p class="lede">Aim for clarity, not perfection.</p></div>
+  </div>
+
+  <div class="card">
+    <div class="checklist">
+      <label class="check"><input type="checkbox" data-item="reset1"> ① Capture anything still in your head.</label>
+      <label class="check"><input type="checkbox" data-item="reset2"> ② Empty notes, inboxes, and paper reminders.</label>
+      <label class="check"><input type="checkbox" data-item="reset3"> ③ Review the past calendar for follow-ups.</label>
+      <label class="check"><input type="checkbox" data-item="reset4"> ④ Review the upcoming calendar for preparation.</label>
+      <label class="check"><input type="checkbox" data-item="reset5"> ⑤ Give every active project a next action.</label>
+      <label class="check"><input type="checkbox" data-item="reset6"> ⑥ Update the Next Actions list.</label>
+      <label class="check"><input type="checkbox" data-item="reset7"> ⑦ Follow up on Waiting For items.</label>
+      <label class="check"><input type="checkbox" data-item="reset8"> ⑧ Revisit Someday / Maybe items.</label>
+      <label class="check"><input type="checkbox" data-item="reset9"> ⑨ Scan reference material for new actions.</label>
+      <label class="check"><input type="checkbox" data-item="reset10"> ⑩ Make room for one new idea.</label>
+    </div>
+    <div class="actions"><button class="btn primary" onclick="completeWeekly()">Complete Weekly Review</button></div>
+    <div id="weeklyResult" class="result hidden"></div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card"><h3>Three final questions</h3><p>Am I clear about what is unfinished right now?<br>Do I know the next action for every active project?<br>Do I trust my system to remind me when I need it?</p></div>
+    <div class="card"><h3>You do not need to finish everything</h3><p>A good system lets you say with confidence: “I am not doing this right now, but I know where it is, and I will review it at the right time.”</p></div>
+  </div>
+</div>
+</section>
+
+<section id="summary">
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">My Summary</div><h2>Your plan at a glance.</h2><p class="lede">This summary updates from your entries and is included in print and PDF output.</p></div>
+  </div>
+  <div class="card">
+    <div id="summaryGrid" class="summary-grid" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn primary" onclick="buildSummary(true)">Refresh Summary</button>
+      <button class="btn" onclick="downloadSummary()">Download as Text</button>
+      <button class="btn" onclick="copySummary()">Copy Summary</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+  <div class="section-head">
+    <div><div class="kicker">Anytime</div><h2>When you feel stuck, ask these five questions.</h2></div>
+  </div>
+  <div class="card">
+    <div class="accordion"><button onclick="toggleAcc(this)">What is taking up most of my attention right now? <span>＋</span></button><div class="body hidden">Name it first. You do not have to solve it yet.</div></div>
+    <div class="accordion"><button onclick="toggleAcc(this)">What do I want the outcome to be? <span>＋</span></button><div class="body hidden">Describe an outcome that lets you tell when it is done.</div></div>
+    <div class="accordion"><button onclick="toggleAcc(this)">What exactly is the next action? <span>＋</span></button><div class="body hidden">Write a concrete action you can actually complete, not a vague topic.</div></div>
+    <div class="accordion"><button onclick="toggleAcc(this)">Where should this reminder live? <span>＋</span></button><div class="body hidden">Projects, Next Actions, Calendar, Waiting For, Reference, or Someday / Maybe.</div></div>
+    <div class="accordion"><button onclick="toggleAcc(this)">What makes the most sense given my current conditions? <span>＋</span></button><div class="body hidden">Consider context, available time, energy, and relative priority, then choose.</div></div>
+  </div>
+</div>
+</section>
+</main>
+
+<button class="btn primary floating" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to Top</button>
+<div class="toast" id="toast"></div>
+
+<footer class="footer">
+  <div class="container">
+    <div>Developed by <a href="https://mindx.us/" target="_blank" rel="noopener noreferrer">Mind X Associates</a></div>
+  </div>
+</footer>
+
+<script>
+const KEY='mindx_clear_mental_clutter_en_v1';
+let state=JSON.parse(localStorage.getItem(KEY)||'{}');
+
+function saveState(){
+  document.querySelectorAll('input,textarea,select').forEach(el=>{
+    const k=el.id||el.dataset.item;
+    if(!k)return;
+    state[k]=el.type==='checkbox'?el.checked:el.value;
+  });
+  localStorage.setItem(KEY,JSON.stringify(state));
+  updateProgress();
+  buildSummary(false);
+}
+function restore(){
+  document.querySelectorAll('input,textarea,select').forEach(el=>{
+    const k=el.id||el.dataset.item;
+    if(!k||!(k in state))return;
+    if(el.type==='checkbox')el.checked=!!state[k];else el.value=state[k];
+  });
+  updateProgress();
+  parseDump(false);
+  buildSummary(false);
+}
+document.addEventListener('input',saveState);
+document.addEventListener('change',saveState);
+
+function mark(id){state['visited_'+id]=true;localStorage.setItem(KEY,JSON.stringify(state));updateProgress();}
+function updateProgress(){
+  const ids=['start','capture','clarify','organize','review','act','projects','horizons','weekly','summary'];
+  const done=ids.filter(x=>state['visited_'+x]).length;
+  const pct=Math.round(done/ids.length*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressText').textContent='Complete '+pct+'%';
+}
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)mark(e.target.id);});
+},{threshold:.28});
+document.querySelectorAll('main section[id]').forEach(s=>observer.observe(s));
+
+document.querySelectorAll('.nav button').forEach(btn=>{
+  btn.addEventListener('click',()=>document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth',block:'start'}));
+});
+const navObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===e.target.id));
+    }
+  });
+},{rootMargin:'-35% 0px -55% 0px'});
+document.querySelectorAll('main section[id]').forEach(s=>navObs.observe(s));
+
+function parseDump(notify=true){
+  const raw=document.getElementById('dump').value.trim();
+  const list=document.getElementById('captureList');
+  list.innerHTML='';
+  if(!raw){if(notify)showToast('Write down a few things that come to mind first.');return;}
+  raw.split(/\n+/).map(x=>x.trim()).filter(Boolean).slice(0,40).forEach((item,i)=>{
+    const el=document.createElement('div');el.className='card';
+    el.innerHTML='<span class="pill">Item '+(i+1)+'</span><h3 style="margin-top:9px"></h3><p class="small">Next: Ask “What is this?” then “Does it require action?”</p>';
+    el.querySelector('h3').textContent=item;list.appendChild(el);
+  });
+  if(notify){mark('capture');showToast('Added '+list.children.length+' items to the list');}
+}
+function buildClarify(){
+  const item=document.getElementById('clarifyItem').value.trim();
+  const out=document.getElementById('clarifyOutcome').value.trim();
+  const act=document.getElementById('clarifyAction').value.trim();
+  const box=document.getElementById('clarifyResult');box.classList.remove('hidden');
+  if(!item){box.textContent='First, write down what is on your mind.';return;}
+  box.innerHTML='<strong>'+escapeHtml(item)+'</strong><br>Done looks like: '+escapeHtml(out||'Still needs a clearer definition')+'<br>Next action: '+escapeHtml(act||'Still needs a specific action');
+  mark('clarify');
+}
+function sortTo(bucket){
+  const item=document.getElementById('sorter').value.trim();
+  const box=document.getElementById('sortResult');box.classList.remove('hidden');
+  box.textContent=item?`${item} → ${bucket}`:'Enter one thing first.';
+  mark('organize');
+}
+function saveProject(){
+  const name=document.getElementById('pname').value.trim()||'Untitled project';
+  const next=document.getElementById('pnext').value.trim()||'A specific next action still needs to be defined';
+  const box=document.getElementById('projectResult');box.classList.remove('hidden');
+  box.innerHTML='<strong>'+escapeHtml(name)+'</strong><br>Next action: '+escapeHtml(next);
+  state.lastProject={name,next,date:new Date().toISOString()};
+  localStorage.setItem(KEY,JSON.stringify(state));mark('projects');showToast('Project plan saved on this device');
+}
+function clearProject(){
+  ['pname','ppurpose','poutcome','pbrain','pnext'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('projectResult').classList.add('hidden');
+}
+function completeWeekly(){
+  const checks=[...document.querySelectorAll('#weekly input[type=checkbox]')];
+  const n=checks.filter(x=>x.checked).length;
+  const box=document.getElementById('weeklyResult');box.classList.remove('hidden');
+  box.textContent=n===checks.length?'Weekly Review complete. You now have a fresh overview of your system.':`Completed ${n} of ${checks.length} items. Finish the most valuable parts first, and leave the rest in your system to revisit later.`;
+  mark('weekly');
+}
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;body.classList.toggle('hidden');
+  btn.querySelector('span').textContent=body.classList.contains('hidden')?'＋':'−';
+}
+function summaryData(){
+  const value=id=>(document.getElementById(id)?.value||'').trim();
+  return [
+    ['Mental inbox',value('dump')],
+    ['Main focus',value('clarifyItem')||value('resetOutcome')],
+    ['Desired outcome',value('clarifyOutcome')||value('poutcome')],
+    ['Next action',value('clarifyAction')||value('pnext')||value('resetNext')],
+    ['Chosen action now',value('choice')],
+    ['Current conditions',[value('where'),value('time'),value('energy')].filter(Boolean).join(' · ')]
+  ];
+}
+function buildSummary(notify=false){
+  const grid=document.getElementById('summaryGrid');
+  if(!grid)return;
+  const rows=summaryData().filter(([,v])=>v);
+  grid.innerHTML='';
+  if(!rows.length){
+    grid.innerHTML='<div class="summary-item"><span>Nothing here yet</span><p>Complete any exercise and your key entries will appear here.</p></div>';
+  }else{
+    rows.forEach(([label,value])=>{
+      const item=document.createElement('div');item.className='summary-item';
+      item.innerHTML='<span>'+escapeHtml(label)+'</span><p>'+escapeHtml(value)+'</p>';
+      grid.appendChild(item);
+    });
+  }
+  if(notify){mark('summary');showToast('Summary updated');}
+}
+function summaryText(){
+  const rows=summaryData().filter(([,v])=>v);
+  return ['CLEAR THE CLUTTER — MY SUMMARY','',...rows.flatMap(([k,v])=>[k.toUpperCase(),v,'']),'Created with Mind X Associates'].join('\n');
+}
+function downloadSummary(){
+  buildSummary(false);
+  const blob=new Blob([summaryText()],{type:'text/plain;charset=utf-8'});
+  const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='my-clarity-summary.txt';link.click();
+  setTimeout(()=>URL.revokeObjectURL(link.href),1000);showToast('Notes downloaded');
+}
+async function copySummary(){
+  try{await navigator.clipboard.writeText(summaryText());showToast('Summary copied');}
+  catch{showToast('Copy is unavailable in this browser');}
+}
+function printPDF(){
+  saveState();buildSummary(false);
+  document.querySelectorAll('textarea').forEach(el=>{el.dataset.oldHeight=el.style.height;el.style.height=el.scrollHeight+'px';});
+  window.print();
+}
+window.addEventListener('afterprint',()=>document.querySelectorAll('textarea').forEach(el=>el.style.height=el.dataset.oldHeight||''));
+function resetAll(){
+  if(!confirm('Clear all saved entries and progress on this device?'))return;
+  localStorage.removeItem(KEY);state={};
+  document.querySelectorAll('input,textarea').forEach(el=>{if(el.type==='checkbox')el.checked=false;else el.value='';});
+  document.querySelectorAll('select').forEach(el=>el.selectedIndex=0);
+  document.querySelectorAll('.result').forEach(el=>{el.textContent='';el.classList.add('hidden');});
+  document.getElementById('captureList').innerHTML='';
+  updateProgress();buildSummary(false);showToast('All entries cleared');
+}
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),2200);
+}
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+restore();
+</script>
+</body>
+</html>
